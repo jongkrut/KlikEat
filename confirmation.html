@@ -1,0 +1,78 @@
+<!DOCTYPE html>               
+
+<html lang="en"> 
+
+<head>
+    <title>Klik-Eat.com</title> 
+    <link type="image/x-icon" href="favicon.png" rel="shortcut icon">
+    <link type="image/x-icon" href="favicon.png" rel="icon">
+    <link rel="stylesheet" href="css/style.css"/>
+    <link rel="stylesheet" href="css/bootstrap.css"/>
+    <link rel="stylesheet" href="css/font-awesome/css/font-awesome.min.css"/>
+    <link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css'>
+  
+    <script type="text/javascript" src="js/jquery-1.10.1.min.js"></script>
+    <script type="text/javascript" src="cordova.js"></script>
+	<script type="text/javascript" src="PushNotification.js"></script>
+    <script type="text/javascript" src="js/modernizr.custom.min.js"></script>
+    <script type="text/javascript" src="js/jquery.flexslider-min.js"></script>
+    <script type="text/javascript" src="js/numeral.js"></script>
+    <script type="text/javascript" src="js/modal.js"></script>
+    <script type="text/javascript" src="js/script.ajax.js"></script>
+	
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="apple-touch-icon" href="/img/apple-touch-icon.png"/>
+</head> 
+
+<body> 
+
+<div data-role="page" id="checkoutPage" data-add-back-btn="true">
+	<div class="header">
+	    <div style="width:100px;float:left;height:50px"></div>
+	    <a href="index.html"><img src="img/Klik-Eat-Logo-White.png" alt="Klik-Eat.com" style="height:40px;margin:5px auto"/></a>
+	    <div id="signin_container" class="sign_container"></div>
+	</div>
+
+	<div style="padding:10px;margin-top:50px;float:left">
+	    <div class="checkout_header">Thank You</div>
+
+	    <div style="font-family:Helvetica,Arial;font-size:20px;margin-bottom:30px" id="order_id"></div>
+
+	    <div id="payment_container" style="margin-bottom:30px"></div>
+
+	    <div class="checkout_header">What's going to happen next?</div>
+	    <div style="font-family:Helvetica,Arial;margin-top:20px">
+		<strong>If you are a new customer:</strong><br/>
+		We will call you to confirm in 10 minutes.<br/>
+		<br/>
+		<strong>If you are a returning customer:</strong><br/>
+		No telephone calls will be initiated by us, except if we need confirmation from you.<br/>
+		<br/>
+		Please make sure your mobile phone is on and can receive calls. We will need to call you if:<br/>
+		- Estimated delivery time is more than 60 minutes.<br/>
+		- Your food is not available.<br/>
+		- We need additional info on your delivery address.<br/>
+		<br/>
+		<strong>Order Cancellation:</strong><br/>
+		All order cancellation has to be done through phone at 021 2954 5000.<br/>
+		All orders that have been confirmed by the restaurant cannot be cancelled.<br/>
+		Usually this is a 10 minutes window.
+	</div>
+
+	<div data-role="footer" style="margin-top:30px;font-size:70%;text-align:center;padding:10px;border-top:1px solid #333">
+			Copyright &copy; 2014 Klik-Eat.com. All rights reserved.
+	</div>
+</div>
+
+<script>
+$(window).load(function() {
+	document.addEventListener("deviceready", initPushwoosh, true);
+    loadPanel();
+    checkPayment();
+    var order_id = getUrlVars()['order_id'];
+    $('#order_id').html("Your Order ID : <strong>" + order_id + "</strong>");
+});
+</script>
+
+</body>
+</html>

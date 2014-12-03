@@ -1,0 +1,150 @@
+<!DOCTYPE html>               
+
+<html lang="en"> 
+
+<head>
+    <title>Klik-Eat.com</title> 
+    <link type="image/x-icon" href="favicon.png" rel="shortcut icon">
+    <link type="image/x-icon" href="favicon.png" rel="icon">
+    <link rel="stylesheet" href="css/style.css"/>
+    <link rel="stylesheet" href="css/bootstrap.css"/>
+    <link rel="stylesheet" href="css/font-awesome/css/font-awesome.min.css"/>
+    <link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css'>
+
+    <script type="text/javascript" src="js/jquery-1.10.1.min.js"></script>
+    <script type="text/javascript" src="cordova.js"></script>
+	<script type="text/javascript" src="PushNotification.js"></script>
+    <script type="text/javascript" src="js/modernizr.custom.min.js"></script>
+    <script type="text/javascript" src="js/jquery.flexslider-min.js"></script>
+    <script type="text/javascript" src="js/numeral.js"></script>
+    <script type="text/javascript" src="js/modal.js"></script>
+    <script type="text/javascript" src="js/script.ajax.js"></script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="apple-touch-icon" href="/img/apple-touch-icon.png"/>
+</head> 
+
+<body> 
+
+	<div class="header">
+	    <div class="back_container" onclick="history.back()"><i class="icon-arrow-left" style="float:left;line-height:50px"></i></div>
+	    <a href="index.html"><img src="img/Klik-Eat-Logo-White.png" alt="Klik-Eat.com" style="height:40px;margin:5px auto"/></a>
+	    <div id="signin_container" class="sign_container"></div>
+	</div>
+	<div class="loader">Loading</div>
+	<div style="width:100%;-moz-box-sizing:border-box;box-sizing:border-box;text-align:center;font-size:26px;font-weight:bold;margin-top:15px;float:left;">Your Cart</div>
+
+	<div style="margin-top:0px;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box;float:left;width:100%">
+	    <ul id="cartList"></ul>
+	    <ul id="amountList"></ul>
+		
+	    <div style="width:100%;padding:5px;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box;margin-bottom:10px;float:left">
+	    <div class="checkout_header">Payment Method</div>
+	    <fieldset id="paymentList">
+			<legend style="font-family:sans-serif;font-size:14px">Pembayaran di Tempat</legend>
+			<input name="payment_method" type="radio" value="cash" id="pay_cash" checked>
+			<label for="pay_cash">Cash</label><br>
+
+			<span id="cash_only">
+				<input name="payment_method" type="radio" value="credit-card" id="pay_edc">
+				<label for="pay_edc">Credit/Debit Card (Visa/Mastercard)</label><br>
+			</span>
+	    </fieldset>
+		
+		<fieldset id="onlinePaymentList">
+			<legend style="font-family:sans-serif;font-size:14px">Pembayaran Online</legend>
+			<input name="payment_method" type="radio" value="cc-online" id="pay_cc">
+			<label for="pay_cc">Online Credit Card (Visa/Mastercard)</label><br>
+			<input name="payment_method" type="radio" value="ecash" id="pay_ecash">
+			<label for="pay_edc">Mandiri e-Cash</label><br>
+	    </fieldset>
+		
+	    <div style="font-family:Helvetica,Arial;font-size:13px;margin-top:5px;width:100%;float:left;margin-left:3px">Any discount/promo will be applied and seen on the Checkout page</div>
+	    </div>
+	    
+	    <div id="hours" style="font-family:'PT Sans';width:100%;text-align:center;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box;margin-bottom:10px"></div>
+		
+		<div id="busy_div" style="font-family:'PT Sans';float:left;margin-bottom:10px;font-size:12px;padding:5px;display:none">		
+			<div style="padding:10px;background-color:#fee459;">
+			Kami sedang full order. Perkiraan waktu delivery <strong>< 90 menit</strong><br/>
+            We are experiencing high order volume. Estimated delivery time <strong>< 90 menit</strong><br/>
+				<div style="text-align:center;font-size:14px;margin-top:10px">
+					<input type="checkbox" name="busy_agree" value="1" id="busy_checkbox"> I understand with the prolonged delivery time
+				</div>
+			</div>
+		</div>
+		
+	    <div class="checkout_btn" id="checkout_btndiv">
+			<span id="checkout_btn">Go To Checkout</span>
+	    </div>
+	</div>
+
+<script>
+$(window).load(function() {
+	document.addEventListener("deviceready", initPushwoosh, true);
+	loadPanel();
+	var rest_id = getUrlVars()["id"];
+	
+	var count = (JSON.parse(localStorage.getItem("cart-"+rest_id))).count;
+	if(count == 0) {
+		window.location.href="restaurant.html?id="+rest_id;
+	}
+	
+	subtotal = 0;
+	subtotal = populateList(rest_id);
+	var menu;
+	var datastring = "rest_id="+rest_id+"&subtotal="+subtotal;
+	$.getJSON(serviceURL + 'deliveryinfo.php?'+datastring+'&callback=?', function(data) {
+	    menu = data.delivery;
+	    if(menu.cash_only == 1) {
+		    $('#cash_only').hide();
+			$('#onlinePaymentList').hide();
+	    }
+	    var items = "<li>Subtotal<span style='float:right'>Rp "+numeral(subtotal).format('0,0')+".-</span></li>";
+	    items = items + "<li>Delivery Fee<span style='float:right'>Rp " + numeral(menu.delivery_fee).format('0,0') + ".-</span></li>";
+	    items = items + "<li>T&S Charge<span style='float:right'>Rp " + numeral(menu.tax_service_charge+menu.tax).format('0,0') + ".-</span></li>";
+	    if(menu.processing_fee > 0)
+		items = items + "<li>Processing Fee<span style='float:right'>Rp " + numeral(menu.processing_fee).format('0,0') + ".-</span></li>";
+	    items = items + "<li style='font-weight:bold;font-size:110%'>GrandTotal<span style='float:right'>Rp " + numeral(menu.grandtotal).format('0,0') + ".-</span></li>";
+
+	    $('#amountList').append(items);
+
+	    var paymentitem = {"subtotal":subtotal, "tax_service_charge" : menu.tax_service_charge , "processing_fee" : menu.processing_fee, "delivery_fee" : menu.delivery_fee , "tax" : menu.tax, "grandtotal" : menu.grandtotal };
+	    localStorage.setItem("payment-"+rest_id, JSON.stringify(paymentitem));
+	    if(menu.delivery == 0) {
+			$('#checkout_btn').parent().css("background-color","#d9534f");
+			$('#checkout_btn').parent().css("cursor","text");
+			$('#checkout_btn').html("Minimum Subtotal: Rp "+numeral(menu.limit_transaction).format('0,0'));
+	    }
+	    else if(menu.delivery == -1) {
+			$('#hours').html("Restaurant is Closed");
+			$('#hours').append("<br/>Delivery Hours : "+menu.hours_start + " - " + menu.hours_end);
+			$('#hours').append("<br/>Your order will be processed as soon as possible");
+			$('#checkout_btndiv').attr("onclick","toCheckout()");
+	    }
+	    else {
+			if(menu.load == 1) {
+				$('#busy_div').show();
+			}
+			else
+				$('#checkout_btndiv').attr("onclick","toCheckout()");
+	    }
+	    $('.loader').hide();
+	});
+	
+	if($('#busy_checkbox').is(":checked")){
+		$('#checkout_btndiv').attr("onclick","toCheckout()");
+	}
+	
+	$('#busy_checkbox').change(function() {
+		if($(this).is(":checked")){
+			$('#checkout_btndiv').attr("onclick","toCheckout()");
+		} else {
+			$('#checkout_btndiv').removeAttr("onclick");
+		}
+	});
+});
+</script>
+
+</body>
+</html>

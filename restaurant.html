@@ -1,0 +1,110 @@
+<!DOCTYPE html>               
+
+<html lang="en"> 
+
+<head>
+    <title>Klik-Eat.com</title> 
+    <link type="image/x-icon" href="favicon.png" rel="shortcut icon">
+    <link type="image/x-icon" href="favicon.png" rel="icon">
+    <link rel="stylesheet" href="css/style.css"/>
+    <link rel="stylesheet" href="css/bootstrap.css"/>
+    <link rel="stylesheet" href="css/font-awesome/css/font-awesome.min.css"/>
+    <link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css'>
+   
+    <script type="text/javascript" src="js/jquery-1.10.1.min.js"></script>
+    <script type="text/javascript" src="js/jquery-migrate-1.2.1.min.js"></script>
+    <script type="text/javascript" src="js/modernizr.custom.min.js"></script>
+    <script type="text/javascript" src="js/jquery.flexslider-min.js"></script>
+    <script type="text/javascript" src="js/numeral.js"></script>
+    <script type="text/javascript" src="js/modal.js"></script>
+    <script type="text/javascript" src="js/script.ajax.js"></script>
+	
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="apple-touch-icon" href="/img/apple-touch-icon.png"/>
+	
+</head> 
+
+<body> 
+	<div class="header">
+		<div class="back_container" onclick="history.back()"><i class="icon-arrow-left" style="float:left;line-height:50px"></i></div>
+		<a href="index.html"><img src="img/Klik-Eat-Logo-White.png" alt="Klik-Eat.com" style="height:40px;margin: 5px auto"/></a>
+		<div class="cart_container">
+			<a href="cart.html" id="cart_a">Cart <span id="cart_count"></span></a>
+		</div> 
+	</div>
+
+	<div style="float:left;width:100%;margin-top:50px;-moz-box-sizing:border-box;box-sizing:border-box;" >
+		<div id="restaurantHeader" style="background-repeat:no-repeat;background-size:cover;padding:10px;height:40px;">
+			<div class="restoInfoLeft" id="restaurantLogo" ></div>
+			<div class="restoInfoRight" id="restaurantName"></div>
+		</div>
+		<div style="padding:10px;font-family:Helvetica,Arial;font-size:14px;width:100%;box-sizing:border-box;-moz-box-sizing:border-box;" id="restaurantInfo">
+		    <div style="position:absolute;right:5px;font-size:20px;cursor:pointer" id="go_details"><i title="More Details" class="icon-chevron-sign-right"></i></div>
+		</div>
+
+		<div id="openingHour" style="-moz-box-sizing:border-box;box-sizing:border-box;padding:10px 10px;text-align:center;font-family:Helvetica,Arial;font-size:14px"></div>
+
+		<div id="menuList" style="margin-top:0px;padding:0px 3px;-moz-box-sizing:border-box;box-sizing:border-box;" ></div>
+		<div id="divsList" style="-moz-box-sizing:border-box;box-sizing:border-box;"></div>
+	</div>
+
+	<div data-role="footer" style="font-size:70%;text-align:center;padding:10px;box-sizing:border-box;-moz-box-sizing:border-box;margin-top:10px;width:100%;float:left">
+		Copyright &copy; 2013 Klik-Eat.com. All rights reserved.
+	</div>
+
+
+<script>
+$(window).load(function() {
+	getRestoInfo();
+	getMenuCategoryList();
+	getDeliveryArea();
+	rest_id = getUrlVars()["id"];
+	//localStorage.removeItem("cart-"+rest_id);
+	if(localStorage.getItem("cart-"+rest_id))
+	{
+		cartitem = JSON.parse(localStorage.getItem("cart-"+rest_id));
+		$('#cart_count').html("("+cartitem.count+")");
+		if(cartitem.count > 0) 
+			$('#cart_a').attr("href","cart.html?id="+rest_id);
+		else
+			$('#cart_a').attr("href","");
+	}
+	else
+	{
+		$('#cart_a').attr("href","");
+		cartitem = { "items" : [], "count" : 0  };
+	}
+	$('#go_details').attr("onclick","location.href='restaurantDetails.html?id="+rest_id+"'");
+});
+</script>
+
+<script>
+
+$(window).load(function() {
+	$(document).on('click','.menu_load', function(e) {
+		var target = $(this).attr('id');
+		getMenus(target);
+		//console.log(target);
+		$('#category_'+target).toggle();
+		$(this).removeClass('menu_load');
+		//$(this).addClass('menu_collaps');
+	});
+	$(document).on('click','.menu_cat', function(e) {
+		var target = $(this).attr('id');
+		target = target.substring(7,target.length);
+		if($('#icon_'+target).hasClass("icon-plus-sign"))
+		{
+		    $('#icon_'+target).removeClass("icon-plus-sign").addClass("icon-minus-sign");
+		}
+		else
+		{
+		    $('#icon_'+target).removeClass("icon-minus-sign").addClass("icon-plus-sign");
+		}
+		$('#category_'+target).toggle();
+	});
+});
+
+</script>
+
+</body>
+</html>

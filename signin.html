@@ -1,0 +1,122 @@
+<!DOCTYPE html>               
+
+<html lang="en"> 
+
+<head> 
+    <title>Klik-Eat.com</title> 
+    <link type="image/x-icon" href="favicon.png" rel="shortcut icon">
+    <link type="image/x-icon" href="favicon.png" rel="icon">
+    <link rel="stylesheet" href="css/style.css"/>
+    <link rel="stylesheet" href="css/bootstrap.css"/>
+    <link rel="stylesheet" href="css/font-awesome/css/font-awesome.min.css"/>
+    <link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css'>
+
+    <script type="text/javascript" src="js/jquery-1.10.1.min.js"></script>
+    <script type="text/javascript" src="js/jquery-migrate-1.2.1.min.js"></script>
+    <script type="text/javascript" src="js/modernizr.custom.min.js"></script>
+    <script type="text/javascript" src="js/crypto.js"></script>
+    <script type="text/javascript" src="js/modal.js"></script>
+    <script type="text/javascript" src="js/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="js/script.ajax.js"></script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="apple-touch-icon" href="/img/apple-touch-icon.png"/>
+
+</head> 
+
+<body> 
+
+<div data-role="page">
+
+	<div class="header">
+	    <div class="back_container" onclick="history.back()"><i class="icon-arrow-left" style="float:left;line-height:50px"></i></div>
+	    <a href="index.html"><img class="header_logo" src="img/Klik-Eat-Logo-White.png" alt="Klik-Eat.com" style="height:40px;margin:5px auto"/></a>
+	    <div class="sign_container"></div>
+	</div>
+	<div class="modal_loading"><div class="loader"></div></div>
+
+	<br/><br/><br/>
+
+	<ul id="acc_nav" class="resto_details_nav" style="float:left;width:100%">
+		<li class="nav_active"><a href="#sign_in" class="nav_active">Sign In</a></li>
+		<li><a href="#register">Create Account</a></li>
+	</ul>
+	<div style="height:20px;background-color:#ffe5e9;float:left;width:100%"></div>
+
+	<div style="padding:10px;width:100%;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box;">
+	    <div id="sign_in" class="nav_content">
+		<form id="frm_login" class="signin_form">
+		    <table style="width:100%">
+			<tr><td><label for="username">Username</label>
+			<tr><td><input name="c_email" id="username" value="" type="email">
+			<tr><td><label for="passwd">Password</label>
+			<tr><td><input name="c_password" id="passwd" value="" type="password">
+			<tr><td>&nbsp;<td>
+			<tr><td><input type="button" class="sbn_btn" value="Submit" onclick="login('#frm_login')">
+			<tr><td><input type="reset" class="sbn_btn" value="Reset" style="background-color:#d9534f">
+		    </table>
+		</form>
+	    </div>
+
+	    <div id="register" class="nav_content" style="display:none">
+
+		<div id="error_signin" style="float:left;width:100%;text-align:center;font-family:Helvetica,Arial;color:red;margin-top:20px"></div>
+	    
+		<form id="frm_register" class="signin_form">
+		    <table style="width:100%">
+			<tr><td><label for="username">Email</label>
+			<tr><td><input name="c_email" id="username" value="" type="email" class="required">
+			<tr><td><label for="passwd">Password</label>
+			<tr><td><input name="c_password" id="passwd" value="" type="password"  class="required">
+			<tr><td><label for="conf_passwd">Confirm Password</label>
+			<tr><td><input name="conf_password" id="conf_passwd" value="" type="password"  class="required">
+			<tr><td><label for="c_name">Name</label>
+			<tr><td><input name="c_name" id="name" value="" type="text" class="required">
+			<tr><td><label for="phone">Phone</label>
+			<tr><td><input name="c_phone" id="phone" value="" type="text" class="required">
+			<tr><td><label for="mobile">Mobile</label>
+			<tr><td><input name="c_mobile" id="mobile" value="" type="text" class="required">
+			<tr><td><label for="building">Building</label>
+			<tr><td><input name="c_building" id="building" value="" type="text">
+			<tr><td><label for="c_address">Delivery Address</label>
+			<tr><td><textarea name="c_address" class="required" id="c_address"></textarea>
+			<tr><td><label for="c_tag">Tag</label>
+			<tr><td><select name="c_tag" id="c_tag">
+				    <option name="office">Office</option>
+				    <option name="home">Home</option>
+				    <option name="apartment">Apartment</option>
+				    <option name="other">Other</option>
+				</select>
+			<tr><td>&nbsp;<td>
+			<tr><td><input type="button" class="sbn_btn" value="Submit" onclick="register('#frm_register')">
+			<tr><td><input type="reset" class="sbn_btn" value="Reset" style="background-color:#d9534f">
+		    </table>
+		</form>
+	    </div>
+	</div>
+	
+	<div data-role="footer" style="font-size:70%;text-align:center;padding:10px;">
+			Copyright &copy; 2013 Klik-Eat.com. All rights reserved.
+	</div>
+	
+
+</div>
+<script>
+    $(window).load(function() {
+	loadPanel();
+	$('ul#acc_nav li a').click(function(){
+	    $('ul#acc_nav li a').removeClass('nav_active');
+	    $('ul#acc_nav li').removeClass('nav_active');
+	    $(this).addClass('nav_active');
+	    $(this).parent().addClass('nav_active');
+	    $('.nav_content').hide();
+	    var actif = $(this).attr('href');
+	    $(actif).fadeIn('fast');
+	    return false;
+	});
+    });
+</script>
+
+
+</body>
+</html>

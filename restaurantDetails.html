@@ -1,0 +1,84 @@
+<!DOCTYPE html>               
+
+<html lang="en"> 
+
+<head>
+    <title>Klik-Eat.com</title> 
+    <link type="image/x-icon" href="favicon.png" rel="shortcut icon">
+    <link type="image/x-icon" href="favicon.png" rel="icon">
+    <link rel="stylesheet" href="css/style.css"/>
+    <link rel="stylesheet" href="css/bootstrap.css"/>
+    <link rel="stylesheet" href="css/font-awesome/css/font-awesome.min.css"/>
+    <link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css'>
+   
+    <script type="text/javascript" src="js/jquery-1.10.1.min.js"></script>
+    <script type="text/javascript" src="js/jquery-migrate-1.2.1.min.js"></script>
+    <script type="text/javascript" src="js/modernizr.custom.min.js"></script>
+    <script type="text/javascript" src="js/jquery.flexslider-min.js"></script>
+    <script type="text/javascript" src="js/numeral.js"></script>
+    <script type="text/javascript" src="js/modal.js"></script>
+    <script type="text/javascript" src="js/script.ajax.js"></script>
+	
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="apple-touch-icon" href="/img/apple-touch-icon.png"/>
+	
+</head> 
+
+<body> 
+	<div class="header">
+		<div class="back_container" onclick="history.back()"><i class="icon-arrow-left" style="float:left;line-height:50px"></i></div>
+		<a href="index.html"><img src="img/Klik-Eat-Logo-White.png" alt="Klik-Eat.com" style="height:40px;margin: 5px auto"/></a>
+		<div id="signin_container" class="sign_container"></div>
+	</div>
+
+	<div style="float:left;width:100%;margin-top:50px;-moz-box-sizing:border-box;box-sizing:border-box;" >
+		<div id="restaurantHeader" style="background-repeat:no-repeat;background-size:cover;padding:10px;height:40px">
+			<div class="restoInfoLeft" id="restaurantLogo" ></div>
+			<div id="restaurantName" class="restoInfoRight"></div>
+		</div>
+		<div id="restaurantInfo" style="font-size:14px;font-family:Helvetica,Arial;width:100%;-moz-box-sizing:border-box;box-sizing:border-box;padding:10px"></div>
+		<ul id="resto_nav" class="resto_details_nav">
+		    <li class="nav_active"><a href="#info" class="nav_active">Hours & Info</a></li>
+		    <li><a href="#review">Reviews</a></li>
+		</ul>
+		<div style="background-color:#ffe5e9;width:100%;height:20px;"></div>
+
+		<div id="info" class="nav_content" style="font-family:'PT Sans',sans-serif">
+		    <table id="info_table">
+		    </table>
+		</div>
+
+		<div id="review" class="nav_content" style="display:none">
+		    <ul id="review_list">
+		    </ul>
+		</div>
+	</div>
+
+	<div style="font-size:70%;text-align:center;padding:10px;box-sizing:border-box;-moz-box-sizing:border-box;margin-top:10px;width:100%;float:left">
+		Copyright &copy; 2013 Klik-Eat.com. All rights reserved.
+	</div>
+
+
+<script>
+$(window).load(function() {
+	loadPanel();
+	getRestoInfo();
+	getInfoTab();
+//	getDeliveryArea();
+
+	rest_id = getUrlVars()["id"];
+	$('ul#resto_nav li a').click(function(){
+	    $('ul#resto_nav li a').removeClass('nav_active');
+	    $('ul#resto_nav li').removeClass('nav_active');
+	    $(this).addClass('nav_active');
+	    $(this).parent().addClass('nav_active');
+	    $('.nav_content').hide();
+	    var actif = $(this).attr('href');
+	    $(actif).fadeIn('fast');
+	    return false;
+	});
+});
+</script>
+
+</body>
+</html>

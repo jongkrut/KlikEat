@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+
+<html lang="en"> 
+
+<head> 
+    <title>Klik-Eat.com</title> 
+    <link type="image/x-icon" href="favicon.png" rel="shortcut icon">
+    <link type="image/x-icon" href="favicon.png" rel="icon">
+    <link rel="stylesheet" href="css/style.css"/>
+    <link rel="stylesheet" href="css/bootstrap.css"/>
+    <link rel="stylesheet" href="css/flexslider.css"/>
+    <link rel="stylesheet" href="css/font-awesome/css/font-awesome.min.css"/>
+    <link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css'>
+   
+    <script type="text/javascript" src="js/jquery-1.10.1.min.js"></script>
+    <script type="text/javascript" src="cordova.js"></script>
+	<script type="text/javascript" src="PushNotification.js"></script>
+    <script type="text/javascript" src="js/modernizr.custom.min.js"></script>
+    <script type="text/javascript" src="js/jquery.flexslider-min.js"></script>
+    <script type="text/javascript" src="js/numeral.js"></script>
+    <script type="text/javascript" src="js/script.ajax.js"></script>
+    <script type="text/javascript" src="js/modal.js"></script>
+	
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="apple-touch-icon" href="/img/apple-touch-icon.png"/>
+</head> 
+
+<body> 
+
+<div data-role="page">
+
+	<div class="header">
+	    <div class="back_container" onclick="history.back()"><i class="icon-arrow-left" style="float:left;line-height:50px"></i></div>
+	    <a href="index.html"><img src="img/Klik-Eat-Logo-White.png" alt="Klik-Eat.com" style="height:40px;margin:5px auto"/></a>
+	    <div class="sign_container"></div>
+	</div>
+	
+	<div data-role="content" style="float:left;width:100%;margin-top:50px;padding:10px;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box">
+	    <div class="checkout_header">My Information</div>
+	    <table id="infoList" class="info_table"></table>
+	    <div class="checkout_header">My Addresses</div>
+	    <div id="addressList" style="float:left;width:100%">
+		<div style="height:50px;border:1px solid #333;margin-bottom:5px;border-radius:4px;line-height:50px;padding-left:15px;background-color:#fff">
+		    <a href="#modal_add_addr" data-toggle="modal" class="add_addr_a"><i class="icon-plus-sign"></i> Add Address</a>
+		</div>
+		<div style="height:50px;border:1px solid #333;margin-bottom:5px;border-radius:4px;line-height:50px;padding-left:15px;background-color:#fff">
+		    <div onclick="refreshAddress()" class="add_addr_a" style="cursor:pointer"><i class="icon-refresh"></i> Refresh Address List</div>
+		</div>
+	    </div>
+
+	    <div class="checkout_header">Account</div>
+	    <button class="checkout_btn" onclick="signout()" style="cursor:pointer;color:#111;font-size:16px;font-weight:bold">Sign Out</button>
+
+	    <div class="modal fade" id="modal_add_addr">
+		<div class="modal-dialog"><div class="modal-body"><div class="modal-content">
+		    <form id="frm_add_addr">
+		    <div style="padding:20px;font-family:Helvetica,Arial">
+			<h3>Add New Address</h3>
+			Address<br/><textarea class="textarea2" name="addr_content"></textarea><br/>
+			Building<br/><input class="input2" type="text" name="building"><br/>
+			Phone<br/><input class="input2" type="text" name="phone"><br/>
+			Mobile<br/><input class="input2" type="text" name="mobile"><br/>
+			Tag<br/><input class="input2" type="text" name="tag"><br/><br/>
+			<button type="button" class="add_cart_btn" onclick="addAddress('#frm_add_addr')">Add New Address</button>
+		    </div>
+		    </form>
+		</div></div></div>
+	    </div>
+	</div>
+	
+	<div data-role="footer" style="font-size:70%;text-align:center;padding:10px;margin-top:10px;float:left;width:100%;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box">
+	    Copyright &copy; 2014 Klik-Eat.com. All rights reserved.
+	</div>
+	
+</div>
+
+
+<script>
+	$(window).load(function() {
+		document.addEventListener("deviceready", initPushwoosh, true);
+		loadInfo();
+		loadAddress();
+	});
+</script>
+	
+</body>
+</html>
